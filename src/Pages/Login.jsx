@@ -44,25 +44,27 @@ export default function Login() {
     }
 
     try {
-      console.log("🔄 Logging in...");
+      console.log("🔄 Logging in with:", email);
 
       // ✅ Use API service with fallback handling
       const data = await authAPI.login(email, password);
       console.log("✅ Login successful:", data);
 
-      // ✅ Store token and user
+      // ✅ Store token and user in localStorage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // ✅ Update Auth Context
-      login(email, password);
+      // ✅ Update Auth Context (this also stores in context state)
+      await login(email, password);
 
-      // 🚀 Redirect based on role
-      navigate(`/${data.user.role}`);
+      // 🚀 Redirect based on user role (default to employee)
+      const roleRoute = data.user.role || "employee";
+      console.log("🚀 Redirecting to:", `/${roleRoute}`);
+      navigate(`/${roleRoute}`);
 
     } catch (err) {
       console.error("❌ LOGIN ERROR:", err);
-      setError(err.message);
+      setError(err.message || "Login failed. Please try again.");
     }
   };
 

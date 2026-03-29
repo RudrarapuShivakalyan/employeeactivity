@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback } from "react";
+import { authAPI } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -20,25 +21,13 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
-  // 🔥 FIXED LOGIN FUNCTION WITH JWT
+  // 🔥 FIXED LOGIN FUNCTION WITH JWT & FALLBACK
   const login = useCallback(async (email, password) => {
     try {
-      console.log("🔄 Logging in...");
+      console.log("🔄 Logging in with:", email);
 
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Login failed");
-      }
-
-      const data = await res.json();
+      // Use API service which has fallback handling
+      const data = await authAPI.login(email, password);
       console.log("✅ Login successful:", data);
 
       // ✅ Store token and user
@@ -49,13 +38,14 @@ export const AuthProvider = ({ children }) => {
       return data.user;
     } catch (error) {
       console.error("❌ Login error:", error);
-      return null;
+      throw error;
     }
   }, []);
 
   // 🔹 Logout
   const logout = useCallback(() => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
   }, []);
 
