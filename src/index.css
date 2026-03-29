@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+/* Professional Manager Dashboard Styles */
+
+/* Scrollbar Styling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth Transitions */
+* {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  @apply hover:shadow-lg hover:-translate-y-1 cursor-pointer;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* Professional Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-in-out;
+}
+
+/* Tab Navigation Styles */
+.tab-button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.tab-button.active {
+  @apply shadow-lg scale-105;
+}
+
+/* Input Focus Styles */
+input:focus,
+textarea:focus,
+select:focus {
+  @apply ring-2 ring-blue-500 ring-opacity-50 border-blue-500;
+}
+
+/* Status Badge Styles */
+.badge-success {
+  @apply bg-green-100 text-green-700;
+}
+
+.badge-error {
+  @apply bg-red-100 text-red-700;
+}
+
+.badge-warning {
+  @apply bg-orange-100 text-orange-700;
+}
+
+.badge-info {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.badge-primary {
+  @apply bg-purple-100 text-purple-700;
+}
+
+/* Professional Table Styles */
+table tbody tr {
+  @apply border-b border-gray-100 hover:bg-gray-50 transition-colors;
+}
+
+table thead th {
+  @apply font-semibold text-gray-700 text-sm uppercase tracking-wider;
+}
+
+/* Progress Bar Animations */
+.progress-bar {
+  @apply transition-all duration-500 ease-out;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+/* Professional Button Styles */
+.btn-primary {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:-translate-y-1;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+.btn-danger {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-red-600 text-white hover:bg-red-700;
+}
+
+.btn-success {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-green-600 text-white hover:bg-green-700;
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white rounded-lg shadow-md p-6 border border-gray-100;
+}
+
+.card-hover {
+  @apply hover:shadow-lg transition-all duration-300;
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .tab-scroll {
+    @apply overflow-x-auto;
+  }
+}
+
+/* Loading Animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Empty State Styles */
+.empty-state {
+  @apply bg-gray-50 p-12 rounded-lg text-center text-gray-600;
+}
+
+/* Professional Shadows */
+.shadow-soft {
+  @apply shadow-md shadow-gray-200;
+}
+
+.shadow-elevated {
+  @apply shadow-lg shadow-gray-300;
+}

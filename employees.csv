@@ -1,0 +1,4 @@
+employee_id,name,email,phone,role,department,experience,location,status,joining_date
+EMP001,John Doe,john.doe@gmail.com,9876543210,Frontend Developer,IT,2 Years,Hyderabad,Active,2023-01-15
+EMP002,Priya Sharma,priya.sharma@gmail.com,9123456780,Backend Developer,IT,3 Years,Bangalore,Active,2023-03-20
+EMP003,Rahul Verma,rahul.verma@gmail.com,9988776655,UI/UX Designer,Design,2.5 Years,Chennai,Active,2023-06-10
