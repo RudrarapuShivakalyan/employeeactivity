@@ -6,6 +6,7 @@ export default function AdminDashboardOverview() {
   const [showPayrollStatus, setShowPayrollStatus] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const [showApprovals, setShowApprovals] = useState(false);
+  const [selectedReport, setSelectedReport] = useState(null);
 
   useEffect(() => {
     const mockStats = {
@@ -37,10 +38,28 @@ export default function AdminDashboardOverview() {
 
   const handleViewReports = () => {
     setShowReports(true);
+    setSelectedReport(null);
   };
 
   const handleApproveItems = () => {
     setShowApprovals(true);
+  };
+
+  // ✅ REPORT HANDLERS
+  const handleHRAnalytics = () => {
+    setSelectedReport("hrAnalytics");
+  };
+
+  const handleEmployeeDemographics = () => {
+    setSelectedReport("demographics");
+  };
+
+  const handlePayrollSummary = () => {
+    setSelectedReport("payroll");
+  };
+
+  const handleDepartmentPerformance = () => {
+    setSelectedReport("department");
   };
 
   const StatCard = ({ icon, label, value, trend, color }) => (
@@ -210,17 +229,185 @@ export default function AdminDashboardOverview() {
       )}
 
       {/* Reports Modal */}
-      {showReports && (
+      {showReports && !selectedReport && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6">
             <h3 className="text-xl font-bold mb-4">📋 Available Reports</h3>
             <div className="space-y-2 mb-6">
-              <button className="w-full p-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg text-left">📊 HR Analytics Report</button>
-              <button className="w-full p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-left">💼 Employee Demographics</button>
-              <button className="w-full p-3 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg text-left">💰 Payroll Summary</button>
-              <button className="w-full p-3 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg text-left">📈 Department Performance</button>
+              <button 
+                onClick={handleHRAnalytics}
+                className="w-full p-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg text-left font-medium text-purple-700 transition active:scale-95">
+                📊 HR Analytics Report
+              </button>
+              <button 
+                onClick={handleEmployeeDemographics}
+                className="w-full p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-left font-medium text-blue-700 transition active:scale-95">
+                💼 Employee Demographics
+              </button>
+              <button 
+                onClick={handlePayrollSummary}
+                className="w-full p-3 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg text-left font-medium text-green-700 transition active:scale-95">
+                💰 Payroll Summary
+              </button>
+              <button 
+                onClick={handleDepartmentPerformance}
+                className="w-full p-3 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg text-left font-medium text-orange-700 transition active:scale-95">
+                📈 Department Performance
+              </button>
             </div>
             <button onClick={() => setShowReports(false)} className="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* HR Analytics Report */}
+      {selectedReport === "hrAnalytics" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl p-6 max-h-96 overflow-auto">
+            <h3 className="text-xl font-bold mb-4">📊 HR Analytics Report</h3>
+            <div className="space-y-4 mb-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Total Employees</p>
+                  <p className="text-3xl font-bold text-blue-600">{stats?.totalEmployees}</p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Active</p>
+                  <p className="text-3xl font-bold text-green-600">{stats?.activeEmployees}</p>
+                </div>
+                <div className="bg-purple-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Managers</p>
+                  <p className="text-3xl font-bold text-purple-600">{stats?.totalManagers}</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Departments</p>
+                  <p className="text-3xl font-bold text-orange-600">{stats?.totalDepartments}</p>
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-700 mb-2">Monthly Trends:</p>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>✓ Hired this month: {stats?.hireThisMonth}</li>
+                  <li>✓ On leave this month: {stats?.leaveThisMonth}</li>
+                  <li>✓ Attrition rate: 2.3%</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setSelectedReport(null)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Back</button>
+              <button onClick={() => { alert("✅ HR Analytics Report downloaded!"); setShowReports(false); setSelectedReport(null); }} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">📥 Download</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Employee Demographics Report */}
+      {selectedReport === "demographics" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl p-6 max-h-96 overflow-auto">
+            <h3 className="text-xl font-bold mb-4">💼 Employee Demographics</h3>
+            <div className="space-y-4 mb-6">
+              <div className="border-b pb-3">
+                <p className="font-semibold text-gray-700 mb-2">Department Breakdown:</p>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-between"><span>IT & Technology</span><span>12 employees</span></div>
+                  <div className="flex justify-between"><span>Human Resources</span><span>5 employees</span></div>
+                  <div className="flex justify-between"><span>Finance</span><span>8 employees</span></div>
+                  <div className="flex justify-between"><span>Sales</span><span>10 employees</span></div>
+                  <div className="flex justify-between"><span>Marketing</span><span>4 employees</span></div>
+                  <div className="flex justify-between"><span>Operations</span><span>3 employees</span></div>
+                </div>
+              </div>
+              <div className="border-b pb-3">
+                <p className="font-semibold text-gray-700 mb-2">Gender Distribution:</p>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-between"><span>Male</span><span>58%</span></div>
+                  <div className="flex justify-between"><span>Female</span><span>42%</span></div>
+                </div>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-700 mb-2">Experience Level:</p>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-between"><span>0-2 years</span><span>15 employees</span></div>
+                  <div className="flex justify-between"><span>2-5 years</span><span>18 employees</span></div>
+                  <div className="flex justify-between"><span>5+ years</span><span>9 employees</span></div>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setSelectedReport(null)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Back</button>
+              <button onClick={() => { alert("✅ Demographics Report downloaded!"); setShowReports(false); setSelectedReport(null); }} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">📥 Download</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payroll Summary Report */}
+      {selectedReport === "payroll" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl p-6 max-h-96 overflow-auto">
+            <h3 className="text-xl font-bold mb-4">💰 Payroll Summary Report</h3>
+            <div className="space-y-4 mb-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Total Payroll Cost</p>
+                  <p className="text-2xl font-bold text-green-600">₹{((stats?.payrollProcessed * stats?.averageSalary) / 10000000).toFixed(1)}Cr</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Employees Paid</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats?.payrollProcessed}</p>
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-700 mb-2">March 2026 Summary:</p>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>✓ Average salary: ₹{(stats?.averageSalary / 100000).toFixed(0)}L</li>
+                  <li>✓ Total deductions: ₹4,85,000</li>
+                  <li>✓ Gross payout: ₹31.5Cr</li>
+                  <li>✓ Status: Processed & Ready for transfer</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setSelectedReport(null)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Back</button>
+              <button onClick={() => { alert("✅ Payroll Summary Report downloaded!"); setShowReports(false); setSelectedReport(null); }} className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">📥 Download</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Department Performance Report */}
+      {selectedReport === "department" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl p-6 max-h-96 overflow-auto">
+            <h3 className="text-xl font-bold mb-4">📈 Department Performance Report</h3>
+            <div className="space-y-3 mb-6">
+              {[
+                { dept: "IT & Technology", target: 95, actual: 92, status: "On Track" },
+                { dept: "Sales", target: 100, actual: 108, status: "Exceeding" },
+                { dept: "Finance", target: 90, actual: 88, status: "Below Target" },
+                { dept: "HR", target: 85, actual: 86, status: "On Track" },
+                { dept: "Marketing", target: 80, actual: 82, status: "On Track" },
+                { dept: "Operations", target: 90, actual: 91, status: "Exceeding" },
+              ].map((dept, idx) => (
+                <div key={idx} className="p-3 bg-gray-50 rounded-lg border">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-gray-700">{dept.dept}</span>
+                    <span className={`text-xs font-bold px-2 py-1 rounded ${dept.status === 'On Track' ? 'bg-green-100 text-green-700' : dept.status === 'Exceeding' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>
+                      {dept.status}
+                    </span>
+                  </div>
+                  <div className="flex gap-2 text-sm text-gray-600">
+                    <span>Target: {dept.target}%</span>
+                    <span>Actual: {dept.actual}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setSelectedReport(null)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Back</button>
+              <button onClick={() => { alert("✅ Department Performance Report downloaded!"); setShowReports(false); setSelectedReport(null); }} className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">📥 Download</button>
+            </div>
           </div>
         </div>
       )}
