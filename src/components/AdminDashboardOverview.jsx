@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 
 export default function AdminDashboardOverview() {
   const [stats, setStats] = useState(null);
+  const [showAddEmployee, setShowAddEmployee] = useState(false);
+  const [showPayrollStatus, setShowPayrollStatus] = useState(false);
+  const [showReports, setShowReports] = useState(false);
+  const [showApprovals, setShowApprovals] = useState(false);
 
   useEffect(() => {
     const mockStats = {
@@ -21,6 +25,23 @@ export default function AdminDashboardOverview() {
     };
     setStats(mockStats);
   }, []);
+
+  // ✅ HANDLER FUNCTIONS
+  const handleAddEmployee = () => {
+    setShowAddEmployee(true);
+  };
+
+  const handleProcessPayroll = () => {
+    setShowPayrollStatus(true);
+  };
+
+  const handleViewReports = () => {
+    setShowReports(true);
+  };
+
+  const handleApproveItems = () => {
+    setShowApprovals(true);
+  };
 
   const StatCard = ({ icon, label, value, trend, color }) => (
     <div className={`bg-gradient-to-br ${color} text-white p-6 rounded-lg shadow-md`}>
@@ -121,24 +142,115 @@ export default function AdminDashboardOverview() {
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-bold text-gray-800 mb-4">⚡ Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button className="p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition">
+          <button 
+            onClick={handleAddEmployee}
+            className="p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition active:scale-95">
             <p className="text-2xl mb-2">➕</p>
             <p className="text-sm font-medium text-blue-700">Add Employee</p>
           </button>
-          <button className="p-4 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg transition">
+          <button 
+            onClick={handleProcessPayroll}
+            className="p-4 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg transition active:scale-95">
             <p className="text-2xl mb-2">📝</p>
             <p className="text-sm font-medium text-green-700">Process Payroll</p>
           </button>
-          <button className="p-4 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition">
+          <button 
+            onClick={handleViewReports}
+            className="p-4 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition active:scale-95">
             <p className="text-2xl mb-2">📋</p>
             <p className="text-sm font-medium text-purple-700">View Reports</p>
           </button>
-          <button className="p-4 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg transition">
+          <button 
+            onClick={handleApproveItems}
+            className="p-4 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg transition active:scale-95">
             <p className="text-2xl mb-2">✅</p>
             <p className="text-sm font-medium text-orange-700">Approve Items</p>
           </button>
         </div>
       </div>
+
+      {/* MODALS */}
+
+      {/* Add Employee Modal */}
+      {showAddEmployee && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-xl font-bold mb-4">➕ Add New Employee</h3>
+            <div className="space-y-3 mb-6">
+              <input type="text" placeholder="Employee Name" className="w-full p-2 border rounded-lg" />
+              <input type="email" placeholder="Email" className="w-full p-2 border rounded-lg" />
+              <input type="text" placeholder="Department" className="w-full p-2 border rounded-lg" />
+              <input type="number" placeholder="Salary" className="w-full p-2 border rounded-lg" />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowAddEmployee(false)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cancel</button>
+              <button onClick={() => { alert("✅ Employee added!"); setShowAddEmployee(false); }} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payroll Status Modal */}
+      {showPayrollStatus && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-xl font-bold mb-4">📝 Payroll Processing Status</h3>
+            <div className="space-y-3 mb-6 text-gray-700">
+              <p>✅ {stats?.payrollProcessed} employees - Salary processed</p>
+              <p>💰 Total amount: ₹{((stats?.payrollProcessed * stats?.averageSalary) / 100000).toFixed(1)}L</p>
+              <p>📅 Current month: March 2026</p>
+              <p>🔄 Status: Ready for bank transfer</p>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowPayrollStatus(false)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Close</button>
+              <button onClick={() => { alert("✅ Payroll processed!"); setShowPayrollStatus(false); }} className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Process</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reports Modal */}
+      {showReports && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-xl font-bold mb-4">📋 Available Reports</h3>
+            <div className="space-y-2 mb-6">
+              <button className="w-full p-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg text-left">📊 HR Analytics Report</button>
+              <button className="w-full p-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-left">💼 Employee Demographics</button>
+              <button className="w-full p-3 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg text-left">💰 Payroll Summary</button>
+              <button className="w-full p-3 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg text-left">📈 Department Performance</button>
+            </div>
+            <button onClick={() => setShowReports(false)} className="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Approvals Modal */}
+      {showApprovals && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-xl font-bold mb-4">✅ Pending Approvals ({stats?.pendingApprovals})</h3>
+            <div className="space-y-3 mb-6 text-sm">
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="font-medium">Loan Application - John Smith</p>
+                <p className="text-xs text-gray-600">Amount: ₹500,000</p>
+              </div>
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="font-medium">Leave Request - Sarah Johnson</p>
+                <p className="text-xs text-gray-600">Duration: 5 days</p>
+              </div>
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="font-medium">Project Allocation - Mike Wilson</p>
+                <p className="text-xs text-gray-600">Project: New System Development</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowApprovals(false)} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Close</button>
+              <button onClick={() => { alert("✅ All approvals reviewed!"); setShowApprovals(false); }} className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Approve All</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
